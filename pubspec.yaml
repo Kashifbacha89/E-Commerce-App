@@ -38,6 +38,7 @@ dependencies:
   #general packages
   google_fonts: ^6.1.0
   flutter_vector_icons: ^2.0.0
+  cached_network_image: ^3.3.1
   #for stateManagement
   provider: ^6.1.1
 
