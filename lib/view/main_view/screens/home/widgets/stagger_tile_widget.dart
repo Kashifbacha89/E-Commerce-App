@@ -14,6 +14,7 @@ class StaggerTileWidget extends StatefulWidget {
 class _StaggerTileWidgetState extends State<StaggerTileWidget> {
   @override
   Widget build(BuildContext context) {
+    final height=MediaQuery.sizeOf(context).height;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -30,13 +31,14 @@ class _StaggerTileWidgetState extends State<StaggerTileWidget> {
             fit: BoxFit.fill,
             ),
             Container(
-              padding: const EdgeInsets.only(top: 12),
+              height: height*.09,
+              padding: const EdgeInsets.only(top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(widget.name,style: appStyleWithHt(18, Colors.black, FontWeight.w800,1),),
-                  Text(widget.price,style: appStyleWithHt(18, Colors.black, FontWeight.w600,1),),
+                  Text("\$${widget.price}",style: appStyleWithHt(16, Colors.black, FontWeight.w600,1),),
 
                 ],
               ),

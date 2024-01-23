@@ -131,13 +131,13 @@ class _ProductByCatScreenState extends State<ProductByCatScreen> with TickerProv
                       return StaggeredGridView.countBuilder(
                         padding:EdgeInsets.zero,
                           crossAxisCount:2,
-                          crossAxisSpacing:20,
-                          mainAxisSpacing:16,
+                          crossAxisSpacing:16,
+                          mainAxisSpacing:14,
                           itemCount: male!.length,
                           scrollDirection: Axis.vertical,
                           staggeredTileBuilder:(index)=>StaggeredTile.extent(
                               (index % 2==0)?1:1,(index % 4==1 ||index % 4 ==3)?
-                              height*0.35:height*0.3
+                              height*0.36:height*0.32
                           ),
                           itemBuilder: (context, index) {
                             final shoe = snapshot.data![index];
