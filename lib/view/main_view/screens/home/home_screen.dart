@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _female = Helper().getFemaleSneakers();
   }
 
-  void getkids() {
+  void getKids() {
     _kids = Helper().getKidsSneakers();
   }
 
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     getMale();
-    getkids();
+    getKids();
     getFemale();
   }
 

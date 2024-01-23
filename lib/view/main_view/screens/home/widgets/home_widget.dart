@@ -12,7 +12,7 @@ class HomeWidget extends StatelessWidget {
     super.key,
     required Future<List<Sneakers>> male,
     required this.tabIndex,
-  }) : _male = male;
+  }) :_male = male;
   final Future<List<Sneakers>> _male;
   final int tabIndex;
 
