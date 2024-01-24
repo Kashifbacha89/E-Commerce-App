@@ -2,6 +2,7 @@ import 'package:e_commerce_app/models/sneaker_model.dart';
 import 'package:e_commerce_app/services/helper.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
 import 'package:e_commerce_app/utils/app_utils/custom_spacer.dart';
+import 'package:e_commerce_app/view/main_view/screens/home/widgets/category_btn_widget.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/latest_shoes_widget.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/stagger_tile_widget.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ProductByCatScreen extends StatefulWidget {
-  const ProductByCatScreen({Key? key}) : super(key: key);
+  const ProductByCatScreen({Key? key,required this.tabIndex}) : super(key: key);
+  final int tabIndex;
 
   @override
   State<ProductByCatScreen> createState() => _ProductByCatScreenState();
@@ -42,6 +44,12 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
     getKids();
     getFemale();
   }
+  List<String> brand=[
+    "assets/images/adidas.png",
+    "assets/images/gucci.png",
+    "assets/images/jordan.png",
+    "assets/images/nike.png",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +143,7 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
   Future<dynamic> filter(){
     final height=MediaQuery.sizeOf(context).height;
     final width=MediaQuery.sizeOf(context).width;
+    double _value=100;
     return showModalBottomSheet(
       isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -144,6 +153,7 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
         context: context,
         builder: (context)=>Container(
           height: height*0.82,
+          width: width,
           decoration: const BoxDecoration(
             color:Colors.white,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(25),
@@ -165,10 +175,69 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
                 child: Column(
                   children: [
                     const CustomSpacer(),
-                    Text('Filter',style: appStyle(36, Colors.black, FontWeight.bold),),
+                    Text('Filter',style: appStyle(30, Colors.black, FontWeight.w800),),
                     const CustomSpacer(),
                     Text('Gender',style: appStyle(18, Colors.black, FontWeight.bold),),
                     const SizedBox(height: 20,),
+                    const Row(
+                      children: [
+                        CategoryBtn(btnColor:Colors.black , label: 'Men', btnTextColor: Colors.black),
+                        CategoryBtn(btnColor:Colors.black , label: 'Women', btnTextColor: Colors.grey),
+                        CategoryBtn(btnColor:Colors.black , label: 'Kids', btnTextColor: Colors.grey),
+                      ],
+                    ),
+                    const CustomSpacer(),
+                    Text('Category',style: appStyle(20, Colors.black, FontWeight.w700),),
+                    const SizedBox(height: 20,),
+                    const Row(
+                      children: [
+                        CategoryBtn(btnColor:Colors.black , label: 'Shoes', btnTextColor: Colors.black),
+                        CategoryBtn(btnColor:Colors.black , label: 'Apparels', btnTextColor: Colors.grey),
+                        CategoryBtn(btnColor:Colors.black , label: 'Acesories', btnTextColor: Colors.grey),
+                      ],
+                    ),
+                    const CustomSpacer(),
+                    Text('price',style: appStyle(20, Colors.black, FontWeight.w700),),
+                    const CustomSpacer(),
+                    Slider(
+                        activeColor: Colors.black,
+                        inactiveColor: Colors.grey,
+                        thumbColor: Colors.black,
+                        max: 500,
+                        divisions: 50,
+                        label: _value.toString(),
+                        secondaryTrackValue: 200,
+
+                        value: _value,
+                        onChanged: (double value){}),
+                    const CustomSpacer(),
+                    Text('Brand',style: appStyle(20, Colors.black, FontWeight.w700),),
+                    const SizedBox(height: 10,),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      height: height*.09,
+                      child: ListView.builder(
+                          itemCount: brand.length,
+                          scrollDirection: Axis.horizontal,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context,index){
+                            return Padding(padding: const EdgeInsets.all(8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(12),
+                                
+                              ),
+                              child: Image.asset(brand[index],
+                              width: 80,
+                                height: 60,
+                                color: Colors.black,
+                              ),
+                            ),
+                            );
+
+                      }),
+                    )
                     
                   ],
                 ),

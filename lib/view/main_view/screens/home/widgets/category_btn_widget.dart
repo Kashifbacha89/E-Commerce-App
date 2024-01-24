@@ -13,15 +13,16 @@ class CategoryBtn extends StatelessWidget {
     final width=MediaQuery.sizeOf(context).width;
     return MaterialButton(onPressed: onPress,
       child: Container(
+        height: 40,
         width: width*.255,
         decoration: BoxDecoration(
           border: Border.all(color: btnColor,
-          width: 1,
+          width: 1.5,
           style: BorderStyle.solid,
           ),
           borderRadius: BorderRadius.circular(9),
         ),
-        child: Text(label,style: appStyle(18, btnTextColor, FontWeight.w700),),
+        child: Center(child: Text(label,style: appStyle(16, btnTextColor, FontWeight.w700),)),
 
       ),
 

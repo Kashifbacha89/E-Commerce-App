@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/models/sneaker_model.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
+import 'package:e_commerce_app/view/main_view/screens/home/product_by_cat_screen.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/new_shoes_widget.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/product_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +75,12 @@ class HomeWidget extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                     /* Navigator.push(
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProductByCat(
+                              builder: (context) =>  ProductByCatScreen(
                                 tabIndex: tabIndex,
-                              )));*/
+                              )));
                     },
                     child: Row(
                       children: [
