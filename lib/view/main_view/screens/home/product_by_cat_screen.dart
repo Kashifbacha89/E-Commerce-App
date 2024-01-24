@@ -1,10 +1,13 @@
 import 'package:e_commerce_app/models/sneaker_model.dart';
 import 'package:e_commerce_app/services/helper.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
+import 'package:e_commerce_app/utils/app_utils/custom_spacer.dart';
+import 'package:e_commerce_app/view/main_view/screens/home/widgets/latest_shoes_widget.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/stagger_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 class ProductByCatScreen extends StatefulWidget {
   const ProductByCatScreen({Key? key}) : super(key: key);
 
@@ -12,9 +15,10 @@ class ProductByCatScreen extends StatefulWidget {
   State<ProductByCatScreen> createState() => _ProductByCatScreenState();
 }
 
-class _ProductByCatScreenState extends State<ProductByCatScreen> with TickerProviderStateMixin {
+class _ProductByCatScreenState extends State<ProductByCatScreen>
+    with TickerProviderStateMixin {
   late final TabController _tabController =
-  TabController(length: 3, vsync: this);
+      TabController(length: 3, vsync: this);
   late Future<List<Sneakers>> _male;
   late Future<List<Sneakers>> _female;
   late Future<List<Sneakers>> _kids;
@@ -41,8 +45,8 @@ class _ProductByCatScreenState extends State<ProductByCatScreen> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    final height=MediaQuery.sizeOf(context).height;
-    final width=MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
+    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: const Color(0xFFE2E2E2),
       body: SizedBox(
@@ -50,8 +54,8 @@ class _ProductByCatScreenState extends State<ProductByCatScreen> with TickerProv
         child: Stack(
           children: [
             Container(
-              padding:  EdgeInsets.fromLTRB(width*.02, height*.05, 0, 0),
-              height: height*.4,
+              padding: EdgeInsets.fromLTRB(width * .02, height * .05, 0, 0),
+              height: height * .4,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/images/top_image.png"),
@@ -59,33 +63,31 @@ class _ProductByCatScreenState extends State<ProductByCatScreen> with TickerProv
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(padding: const EdgeInsets.fromLTRB(6, 12, 16, 18),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(
-                          AntDesign.close,
-                          color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(6, 12, 16, 18),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            AntDesign.close,
+                            color: Colors.white,
+                          ),
                         ),
-
-                      ),
-                      GestureDetector(
-                        onTap: (){
-
-                        },
-                        child: const Icon(
+                        GestureDetector(
+                          onTap: () {
+                            filter();
+                          },
+                          child: const Icon(
                             FontAwesome.sliders,
-                          color: Colors.white,
+                            color: Colors.white,
+                          ),
                         ),
-
-                      ),
-
-                    ],
-                  ),
+                      ],
+                    ),
                   ),
                   TabBar(
                     padding: EdgeInsets.zero,
@@ -112,64 +114,70 @@ class _ProductByCatScreenState extends State<ProductByCatScreen> with TickerProv
                 ],
               ),
             ),
-
             Padding(
-              padding:  EdgeInsets.only(top: height*0.2,left: width*.04,right: width*.03),
-              child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    //future builder
-              FutureBuilder<List<Sneakers>>(
-              future: _male,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text("Error ${snapshot.error}");
-                    } else {
-                      final male = snapshot.data;
-                      return StaggeredGridView.countBuilder(
-                        padding:EdgeInsets.zero,
-                          crossAxisCount:2,
-                          crossAxisSpacing:16,
-                          mainAxisSpacing:14,
-                          itemCount: male!.length,
-                          scrollDirection: Axis.vertical,
-                          staggeredTileBuilder:(index)=>StaggeredTile.extent(
-                              (index % 2==0)?1:1,(index % 4==1 ||index % 4 ==3)?
-                              height*0.36:height*0.32
-                          ),
-                          itemBuilder: (context, index) {
-                            final shoe = snapshot.data![index];
-                            return StaggerTileWidget(imageUrl: shoe.imageUrl[1],
-                                name: shoe.name,
-                                price: shoe.price);
-                          });
-                    }
-                  }),
-                Container(
-                  color: Colors.green,
-                  height: 500,
-                  width: 300,
-                ),
-                Container(
-                  color: Colors.green,
-                  height: 500,
-                  width: 300,
-                ),
-                Container(
-                  color: Colors.green,
-                  height: 500,
-                  width: 300,
-                )
-
-              ]),
+              padding: EdgeInsets.only(
+                  top: height * 0.2, left: width * .04, right: width * .03),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: TabBarView(controller: _tabController, children: [
+                  //future builder
+                  LatestShoes(male: _male, height: height),
+                  LatestShoes(male: _female, height: height),
+                  LatestShoes(male: _kids, height: height),
+                ]),
+              ),
             ),
-
           ],
         ),
-
       ),
     );
+  }
+  Future<dynamic> filter(){
+    final height=MediaQuery.sizeOf(context).height;
+    final width=MediaQuery.sizeOf(context).width;
+    return showModalBottomSheet(
+      isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.white54,
+
+
+        context: context,
+        builder: (context)=>Container(
+          height: height*0.82,
+          decoration: const BoxDecoration(
+            color:Colors.white,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(25),
+            topRight: Radius.circular(25)),
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 10,),
+              Container(
+                height: 5,
+                width: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.black38
+                ),
+              ),
+              SizedBox(
+                height: height*0.7,
+                child: Column(
+                  children: [
+                    const CustomSpacer(),
+                    Text('Filter',style: appStyle(36, Colors.black, FontWeight.bold),),
+                    const CustomSpacer(),
+                    Text('Gender',style: appStyle(18, Colors.black, FontWeight.bold),),
+                    const SizedBox(height: 20,),
+                    
+                  ],
+                ),
+              )
+
+            ],
+          ),
+
+        ));
+
   }
 }
