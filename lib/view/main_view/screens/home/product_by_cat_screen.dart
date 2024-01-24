@@ -40,6 +40,7 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
   @override
   void initState() {
     super.initState();
+    _tabController.animateTo(widget.tabIndex,curve: Curves.easeIn);
     getMale();
     getKids();
     getFemale();
