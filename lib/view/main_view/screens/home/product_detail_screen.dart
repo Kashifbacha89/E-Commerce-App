@@ -3,9 +3,11 @@ import 'package:e_commerce_app/controllers/product_controller.dart';
 import 'package:e_commerce_app/models/sneaker_model.dart';
 import 'package:e_commerce_app/services/helper.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
+import 'package:e_commerce_app/utils/app_utils/check_out_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -21,6 +23,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final PageController _pageController = PageController();
+  final cartBox=Hive.box('cart_box');
   late Future<Sneakers> _sneakers;
   void getShoes() {
     if (widget.category == "Men's Running") {
@@ -30,6 +33,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     } else {
       _sneakers = Helper().getKidsSneakersById(widget.id);
     }
+  }
+  Future<void>  _createCart(Map<String,dynamic> newCart)async{
+    await cartBox.add(newCart);
   }
 
   @override
@@ -301,6 +307,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                         'isSelected'],
                                                         onSelected:
                                                             (newState) {
+                                                          if(productNotifier.sizes.contains(sizes['size'])){
+                                                            productNotifier.sizes.remove(sizes['size']);
+                                                          }else{
+                                                            productNotifier.sizes.add(sizes['size']);
+                                                          }
+                                                          print(productNotifier.sizes);
                                                           productNotifier
                                                               .toggleCheck(
                                                               index);
@@ -329,31 +341,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                           ),
                                         ),
                                         SizedBox(height: height*.01,),
-                                        Text(sneaker.description.toString(),
-                                          textAlign: TextAlign.justify,
-                                          style: appStyle(10, Colors.black54, FontWeight.w500),),
+                                        Flexible(
+                                          child: Text(sneaker.description.toString(),
+                                            textAlign: TextAlign.justify,
+                                            style: appStyle(10, Colors.black54, FontWeight.w500),),
+                                        ),
                                         SizedBox(height: height*.01,),
                                         Align(
                                           alignment: Alignment.bottomCenter,
                                           child: Padding(
                                             padding:  EdgeInsets.only(top: height*.01),
-                                            child: GestureDetector(
-                                              onTap: (){},
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(6),
-                                                child: Container(
-                                                  height: height*.055,
-                                                  width: width*.9,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black,
-                                                    borderRadius: BorderRadius.circular(12),
-                                                  ),
-                                                  child:  Center(
-                                                    child: Text('Add to bag',style: appStyle(12, Colors.white, FontWeight.w600),),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            child:  CheckoutButton(
+                                              label: 'Add to cart',
+                                              onTap: (){
+                                                _createCart({
+                                                  'id':sneaker.id,
+                                                  'name':sneaker.name,
+                                                  'category':sneaker.category,
+                                                  'sizes':productNotifier.sizes,
+                                                  'imageUrl':sneaker.imageUrl[0],
+                                                  'price':sneaker.price,
+                                                  'qty':1
+                                                });
+                                                productNotifier.sizes.clear();
+                                                Navigator.pop(context);
+                                              },
+                                            )
                                           ),
                                         )
                                       ],
@@ -374,3 +387,5 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     ));
   }
 }
+
+

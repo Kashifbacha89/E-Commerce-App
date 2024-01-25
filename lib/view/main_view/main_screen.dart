@@ -14,12 +14,12 @@ import 'widgets/bottom_nav_widgets.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
-  List<Widget> pageList = const [
-    HomeScreen(),
-    SearchScreen(),
-    HomeScreen(),
-    CartScreen(),
-    ProfileScreen(),
+  List<Widget> pageList =  [
+    const HomeScreen(),
+    const SearchScreen(),
+    const HomeScreen(),
+     CartScreen(),
+    const ProfileScreen(),
   ];
 
   @override
