@@ -1,6 +1,8 @@
+import 'package:e_commerce_app/controllers/product_controller.dart';
 import 'package:e_commerce_app/models/sneaker_model.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/product_by_cat_screen.dart';
+import 'package:e_commerce_app/view/main_view/screens/home/product_detail_screen.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/new_shoes_widget.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/product_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,7 @@ class HomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final height=MediaQuery.sizeOf(context).height;
     final width=MediaQuery.sizeOf(context).width;
-    //var productNotifier = Provider.of<ProductNotifier>(context);
+    final productNotifier = Provider.of<ProductNotifier>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,13 +45,14 @@ class HomeWidget extends StatelessWidget {
                           final shoe = snapshot.data![index];
                           return GestureDetector(
                             onTap: () {
-                              /*productNotifier.shoesSizes = shoe.sizes;
+                              productNotifier.shoesSizes = shoe.sizes;
+                              print(productNotifier.shoesSizes);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ProductPage(
+                                      builder: (context) => ProductDetailScreen(
                                           id: shoe.id,
-                                          category: shoe.category)));*/
+                                          category: shoe.category)));
                             },
                             child: ProductCardWidget(
                               price: "\$${shoe.price}",
