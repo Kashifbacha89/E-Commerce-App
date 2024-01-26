@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app/controllers/product_controller.dart';
+import 'package:e_commerce_app/models/constant.dart';
 import 'package:e_commerce_app/models/sneaker_model.dart';
 import 'package:e_commerce_app/services/helper.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
 import 'package:e_commerce_app/utils/app_utils/check_out_btn.dart';
+import 'package:e_commerce_app/view/main_view/screens/favourite/favourite_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -23,7 +25,27 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final PageController _pageController = PageController();
-  final cartBox=Hive.box('cart_box');
+  final _cartBox = Hive.box('cart_box');
+  final _favBox=Hive.box('fav_box');
+  Future<void> _createFav(Map<String,dynamic> addFav)async{
+    await _favBox.add(addFav);
+    getFavourite();
+
+  }
+  getFavourite(){
+    final favData=_favBox.keys.map((key) {
+      final item=_favBox.get(key);
+      return {
+        "key":key,
+        "id":"id",
+      };
+    }).toList();
+    favourite=favData.toList();
+    ids=favourite.map((item) => item['id']).toList();
+    setState(() {
+    });
+  }
+
   late Future<Sneakers> _sneakers;
   void getShoes() {
     if (widget.category == "Men's Running") {
@@ -34,8 +56,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       _sneakers = Helper().getKidsSneakersById(widget.id);
     }
   }
-  Future<void>  _createCart(Map<String,dynamic> newCart)async{
-    await cartBox.add(newCart);
+  Future<void>  _createCart(Map<dynamic,dynamic> newCart)async{
+    await _cartBox.add(newCart);
   }
 
   @override
@@ -121,9 +143,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       Positioned(
                                           top: height * .1,
                                           right: 15,
-                                          child: const Icon(
-                                            AntDesign.heart,
-                                            color: Colors.grey,
+                                          child: GestureDetector(
+                                            onTap:(){
+                                              if(ids.contains(widget.id)){
+                                                Navigator.push(context, MaterialPageRoute(builder: (_)=>const FavouriteScreen()));
+
+                                              }else{
+                                                _createFav({
+                                                  "id":sneaker.id,
+                                                  "name":sneaker.name,
+                                                  "price":sneaker.name,
+                                                  "category":sneaker.category,
+                                                  "imageUrl":sneaker.imageUrl[0],
+                                                });
+
+                                              }
+                                            },
+                                            child: ids.contains(sneaker.id)?const Icon(
+                                              AntDesign.heart,
+                                            ):const Icon(AntDesign.hearto),
                                           )),
                                       Positioned(
                                           top: height * 0.16,
@@ -358,7 +396,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                   'id':sneaker.id,
                                                   'name':sneaker.name,
                                                   'category':sneaker.category,
-                                                  'sizes':productNotifier.sizes,
+                                                  'sizes':productNotifier.sizes[0],
                                                   'imageUrl':sneaker.imageUrl[0],
                                                   'price':sneaker.price,
                                                   'qty':1
