@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce_app/controllers/favourite_controller.dart';
 import 'package:e_commerce_app/controllers/product_controller.dart';
 import 'package:e_commerce_app/models/constant.dart';
 import 'package:e_commerce_app/models/sneaker_model.dart';
@@ -37,7 +38,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       final item=_favBox.get(key);
       return {
         "key":key,
-        "id":"id",
+        "id":item["id"],
       };
     }).toList();
     favourite=favData.toList();
@@ -143,25 +144,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       Positioned(
                                           top: height * .1,
                                           right: 15,
-                                          child: GestureDetector(
-                                            onTap:(){
-                                              if(ids.contains(widget.id)){
-                                                Navigator.push(context, MaterialPageRoute(builder: (_)=>const FavouriteScreen()));
+                                          child: Consumer<FavoritesNotifier>(
+                                            builder: (context,favouriteNotifier,child) {
+                                              return GestureDetector(
+                                                onTap:(){
+                                                  if(ids.contains(widget.id)){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>const FavouriteScreen()));
 
-                                              }else{
-                                                _createFav({
-                                                  "id":sneaker.id,
-                                                  "name":sneaker.name,
-                                                  "price":sneaker.name,
-                                                  "category":sneaker.category,
-                                                  "imageUrl":sneaker.imageUrl[0],
-                                                });
+                                                  }else{
+                                                    _createFav({
+                                                      "id":sneaker.id,
+                                                      "name":sneaker.name,
+                                                      "price":sneaker.price,
+                                                      "category":sneaker.category,
+                                                      "imageUrl":sneaker.imageUrl[0],
+                                                    });
 
-                                              }
-                                            },
-                                            child: ids.contains(sneaker.id)?const Icon(
-                                              AntDesign.heart,
-                                            ):const Icon(AntDesign.hearto),
+                                                  }
+                                                },
+                                                child: ids.contains(sneaker.id)?const Icon(
+                                                  AntDesign.heart,
+                                                ):const Icon(AntDesign.hearto),
+                                              );
+                                            }
                                           )),
                                       Positioned(
                                           top: height * 0.16,

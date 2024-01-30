@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/controllers/main_screen_controller.dart';
 import 'package:e_commerce_app/controllers/product_controller.dart';
 import 'package:e_commerce_app/view/main_view/main_screen.dart';
+import 'package:e_commerce_app/controllers/favourite_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -16,6 +17,7 @@ void main() async{
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => MainScreenNotifier()),
     ChangeNotifierProvider(create: (_)=>ProductNotifier()),
+    ChangeNotifierProvider(create: (_)=>FavoritesNotifier()),
   ], child: const MyApp()));
 }
 

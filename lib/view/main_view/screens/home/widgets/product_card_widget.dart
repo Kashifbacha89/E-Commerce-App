@@ -1,9 +1,11 @@
+import 'package:e_commerce_app/controllers/favourite_controller.dart';
 import 'package:e_commerce_app/models/constant.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
 import 'package:e_commerce_app/view/main_view/screens/favourite/favourite_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 class ProductCardWidget extends StatefulWidget {
   const ProductCardWidget({Key? key, required this.price, required this.category, required this.id, required this.name, required this.image}) : super(key: key);
@@ -29,7 +31,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
       final item=_favBox.get(key);
       return {
         "key":key,
-        "id":"id",
+        "id":item["id"],
       };
     }).toList();
     favourite=favData.toList();
@@ -76,21 +78,25 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   Positioned(
                       right: 10,
                       top: 10,
-                      child: GestureDetector(
-                        onTap: (){
-                          if(ids.contains(widget.id)){
-                            Navigator.push(context, MaterialPageRoute(builder: (_)=>const FavouriteScreen()));
-                          }else{
-                            _createFav({
-                              "id":widget.id,
-                              "name":widget.name,
-                              "category":widget.category,
-                              "price":widget.price,
-                              "image":widget.image
-                            });
-                          }
-                        },
-                        child: ids.contains(widget.id)?const Icon(AntDesign.heart):const Icon(AntDesign.hearto),
+                      child: Consumer<FavoritesNotifier>(
+                        builder: (context,favouriteNotifier,child) {
+                          return GestureDetector(
+                            onTap: (){
+                              if(ids.contains(widget.id)){
+                                Navigator.push(context, MaterialPageRoute(builder: (_)=>const FavouriteScreen()));
+                              }else{
+                                _createFav({
+                                  "id":widget.id,
+                                  "name":widget.name,
+                                  "category":widget.category,
+                                  "price":widget.price,
+                                  "image":widget.image[0]
+                                });
+                              }
+                            },
+                            child: ids.contains(widget.id)?const Icon(AntDesign.heart):const Icon(AntDesign.hearto),
+                          );
+                        }
                       ))
                 ],
               ),
