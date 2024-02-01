@@ -26,14 +26,15 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final PageController _pageController = PageController();
+
   final _cartBox = Hive.box('cart_box');
-  final _favBox=Hive.box('fav_box');
-  Future<void> _createFav(Map<String,dynamic> addFav)async{
+  //final _favBox=Hive.box('fav_box');
+ /* Future<void> _createFav(Map<String,dynamic> addFav)async{
     await _favBox.add(addFav);
     getFavourite();
 
-  }
-  getFavourite(){
+  }*/
+  /*getFavourite(){
     final favData=_favBox.keys.map((key) {
       final item=_favBox.get(key);
       return {
@@ -45,7 +46,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     ids=favourite.map((item) => item['id']).toList();
     setState(() {
     });
-  }
+  }*/
 
   late Future<Sneakers> _sneakers;
   void getShoes() {
@@ -71,7 +72,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
     final width = MediaQuery.sizeOf(context).width;
-    //final productNotifier=Provider.of<ProductNotifier>(context);
+    final favouriteNotifier=Provider.of<FavoritesNotifier>(context,listen: true);
+    favouriteNotifier.getFavourite();
+
     return Scaffold(
         body: FutureBuilder<Sneakers>(
       future: _sneakers,
@@ -144,30 +147,27 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       Positioned(
                                           top: height * .1,
                                           right: 15,
-                                          child: Consumer<FavoritesNotifier>(
-                                            builder: (context,favouriteNotifier,child) {
-                                              return GestureDetector(
-                                                onTap:(){
-                                                  if(ids.contains(widget.id)){
-                                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>const FavouriteScreen()));
+                                          child: GestureDetector(
+                                            onTap:(){
+                                              if(favouriteNotifier.ids.contains(widget.id)){
+                                                Navigator.push(context, MaterialPageRoute(builder: (_)=>const FavouriteScreen()));
 
-                                                  }else{
-                                                    _createFav({
-                                                      "id":sneaker.id,
-                                                      "name":sneaker.name,
-                                                      "price":sneaker.price,
-                                                      "category":sneaker.category,
-                                                      "imageUrl":sneaker.imageUrl[0],
-                                                    });
+                                              }else{
+                                                favouriteNotifier.createFav({
+                                                  "id":sneaker.id,
+                                                  "name":sneaker.name,
+                                                  "price":sneaker.price,
+                                                  "category":sneaker.category,
+                                                  "imageUrl":sneaker.imageUrl[0],
+                                                });
 
-                                                  }
-                                                },
-                                                child: ids.contains(sneaker.id)?const Icon(
-                                                  AntDesign.heart,
-                                                ):const Icon(AntDesign.hearto),
-                                              );
-                                            }
-                                          )),
+                                              }
+
+                                            },
+                                            child: favouriteNotifier.ids.contains(sneaker.id)?const Icon(
+                                              AntDesign.heart,
+                                            ):const Icon(AntDesign.hearto),
+                                          ),),
                                       Positioned(
                                           top: height * 0.16,
                                           left: 0,
