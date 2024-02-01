@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/controllers/product_controller.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
+import 'package:e_commerce_app/utils/app_utils/reusable_text.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: const Color(0xFFE2E2E2),
       body: SizedBox(
-        height: MediaQuery.of(context).size.height,
+        height: height,
         child: Stack(
           children: [
             Container(
@@ -62,16 +63,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Athletics Shoes",
-                      style: appStyleWithHt(
-                          38, Colors.white, FontWeight.bold, 1.5),
-                    ),
-                    Text(
-                      "Collection",
-                      style: appStyleWithHt(
-                          38, Colors.white, FontWeight.bold, 1.2),
-                    ),
+                    ReusableText(text: "Athletics Shoes",
+                         style: appStyleWithHt(
+                    38, Colors.white, FontWeight.bold, 1.5)),
+                    ReusableText(text: "Collection",
+                        style: appStyleWithHt(
+                            38, Colors.white, FontWeight.bold, 1.2)),
                     TabBar(
                       padding: EdgeInsets.zero,
                       indicatorSize: TabBarIndicatorSize.label,
