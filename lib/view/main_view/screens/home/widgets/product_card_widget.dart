@@ -130,15 +130,15 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                         Text('Colors',style: appStyle(14, Colors.grey, FontWeight.w600),),
                         const SizedBox(
                           width: 5,),
-                        ChoiceChip(label: const Text(""),
-                            selected: selected,
-                        visualDensity: VisualDensity.compact,
-                          selectedColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30), // Adjust the radius as needed
-                          ),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        )
+                        const CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 12,
+                        ),
+                        const SizedBox(width: 2,),
+                        const CircleAvatar(
+                          backgroundColor: Colors.redAccent,
+                          radius: 12,
+                        ),
 
                       ],
                     )

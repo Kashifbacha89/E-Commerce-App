@@ -1,14 +1,10 @@
 import 'package:e_commerce_app/controllers/product_controller.dart';
-import 'package:e_commerce_app/models/sneaker_model.dart';
-import 'package:e_commerce_app/services/helper.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
 import 'package:e_commerce_app/utils/app_utils/custom_spacer.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/category_btn_widget.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/latest_shoes_widget.dart';
-import 'package:e_commerce_app/view/main_view/screens/home/widgets/stagger_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 class ProductByCatScreen extends StatefulWidget {

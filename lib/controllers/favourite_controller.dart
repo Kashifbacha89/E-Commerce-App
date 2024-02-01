@@ -40,7 +40,7 @@ class FavoritesNotifier extends ChangeNotifier {
     }).toList();
     _favorites=favData.toList();
     _ids=_favorites.map((item) => item['id']).toList();
-    notifyListeners();
+    //notifyListeners();
   }
   getAllFavouriteData(){
     final favData=_favBox.keys.map((key){
@@ -56,7 +56,7 @@ class FavoritesNotifier extends ChangeNotifier {
 
     }).toList();
     _fav=favData.reversed.toList();
-    notifyListeners();
+    //notifyListeners();
 
   }
   Future<void> createFav(Map<String,dynamic> addFav)async{
