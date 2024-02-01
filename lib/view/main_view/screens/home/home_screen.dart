@@ -1,8 +1,8 @@
-import 'package:e_commerce_app/models/sneaker_model.dart';
-import 'package:e_commerce_app/services/helper.dart';
+import 'package:e_commerce_app/controllers/product_controller.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
 import 'package:e_commerce_app/view/main_view/screens/home/widgets/home_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final TabController _tabController =
   TabController(length: 3, vsync: this);
 
-  late Future<List<Sneakers>> _male;
+  /*late Future<List<Sneakers>> _male;
   late Future<List<Sneakers>> _female;
   late Future<List<Sneakers>> _kids;
 
@@ -30,18 +30,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void getKids() {
     _kids = Helper().getKidsSneakers();
-  }
+  }*/
 
-  @override
-  void initState() {
-    super.initState();
-    getMale();
-    getKids();
-    getFemale();
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    final productProvider=Provider.of<ProductNotifier>(context);
+    productProvider.getMale();
+    productProvider.getFemale();
+    productProvider.getKids();
     final height=MediaQuery.sizeOf(context).height;
     final width=MediaQuery.sizeOf(context).width;
 
@@ -107,15 +105,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 padding: const EdgeInsets.only(left: 12),
                 child: TabBarView(controller: _tabController, children: [
                   HomeWidget(
-                    male: _male,
+                    male: productProvider.male,
                     tabIndex: 0,
                   ),
                   HomeWidget(
-                    male: _female,
+                    male: productProvider.female,
                     tabIndex: 1,
                   ),
                   HomeWidget(
-                    male: _kids,
+                    male: productProvider.kids,
                     tabIndex: 2,
                   ),
                 ]),

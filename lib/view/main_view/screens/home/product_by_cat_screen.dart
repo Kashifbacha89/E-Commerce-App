@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/controllers/product_controller.dart';
 import 'package:e_commerce_app/models/sneaker_model.dart';
 import 'package:e_commerce_app/services/helper.dart';
 import 'package:e_commerce_app/utils/app_utils/app_styles.dart';
@@ -8,6 +9,7 @@ import 'package:e_commerce_app/view/main_view/screens/home/widgets/stagger_tile_
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
 class ProductByCatScreen extends StatefulWidget {
   const ProductByCatScreen({Key? key,required this.tabIndex}) : super(key: key);
@@ -21,29 +23,12 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
     with TickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: 3, vsync: this);
-  late Future<List<Sneakers>> _male;
-  late Future<List<Sneakers>> _female;
-  late Future<List<Sneakers>> _kids;
 
-  void getMale() {
-    _male = Helper().getMaleSneakers();
-  }
-
-  void getFemale() {
-    _female = Helper().getFemaleSneakers();
-  }
-
-  void getKids() {
-    _kids = Helper().getKidsSneakers();
-  }
 
   @override
   void initState() {
     super.initState();
     _tabController.animateTo(widget.tabIndex,curve: Curves.easeIn);
-    getMale();
-    getKids();
-    getFemale();
   }
   List<String> brand=[
     "assets/images/adidas.png",
@@ -54,6 +39,10 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
 
   @override
   Widget build(BuildContext context) {
+    final productNotifier=Provider.of<ProductNotifier>(context);
+    productNotifier.getMale();
+    productNotifier.getFemale();
+    productNotifier.getKids();
     final height = MediaQuery.sizeOf(context).height;
     final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
@@ -130,9 +119,9 @@ class _ProductByCatScreenState extends State<ProductByCatScreen>
                 borderRadius: BorderRadius.circular(12),
                 child: TabBarView(controller: _tabController, children: [
                   //future builder
-                  LatestShoes(male: _male, height: height),
-                  LatestShoes(male: _female, height: height),
-                  LatestShoes(male: _kids, height: height),
+                  LatestShoes(male: productNotifier.male, height: height),
+                  LatestShoes(male: productNotifier.female, height: height),
+                  LatestShoes(male: productNotifier.kids, height: height),
                 ]),
               ),
             ),
